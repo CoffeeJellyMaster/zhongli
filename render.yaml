@@ -4,9 +4,12 @@ services:
     env: python
     plan: free
     buildCommand: |
-      npm install --production=false
+       # Node.js setup
+      npm install --production=false --legacy-peer-deps
       mkdir -p static/dist
       chmod -R +x node_modules/.bin
-      ./node_modules/.bin/tailwindcss -i ./static/src/input.css -o ./static/dist/output.css --minify
+      ./node_modules/.bin/tailwindcss -i ./static/src/input.css -o ./static/dist/output.css --minify || \
+      npx --yes tailwindcss@latest -i ./static/src/input.css -o ./static/dist/output.css --minify
+      pip install --upgrade pip
       pip install -r requirements.txt
-    startCommand: python app.py
+    startCommand: gunicorn --worker-tmp-dir /dev/shm --bind 0.0.0.0:$PORT app:app
