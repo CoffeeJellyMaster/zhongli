@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build:css": "npx tailwindcss -i ./static/src/input.css -o ./static/dist/output.css --minify"
+    "build:css": "./node_modules/.bin/tailwindcss -i ./static/src/input.css -o ./static/dist/output.css --minify"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.7",
