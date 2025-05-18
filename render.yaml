@@ -1,18 +1,15 @@
 services:
   - type: web
-    name: GeodEdge
+    name: flask-tailwind
     env: python
     plan: free
-    nodeVersion: "22.x"
     buildCommand: |
       rm -rf node_modules
       npm install --production=false --force
       mkdir -p static/dist
-      if [ ! -f node_modules/tailwindcss/lib/cli.js ]; then
-        npm install tailwindcss@latest
-      fi
-      node node_modules/tailwindcss/lib/cli.js -i ./static/src/input.css -o ./static/dist/output.css --minify
-      poetry install --no-dev
-      poetry run pip install gunicorn
+      npm install tailwindcss@latest @tailwindcss/cli
+      npx tailwindcss -i ./static/src/input.css -o ./static/dist/output.css --minify
+      pip install -r requirements.txt
+      pip install gunicorn
     startCommand: |
-      poetry run gunicorn --worker-tmp-dir /dev/shm --bind 0.0.0.0:$PORT app:app
+      gunicorn --worker-tmp-dir /dev/shm --bind 0.0.0.0:$PORT app:app
