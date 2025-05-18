@@ -1,17 +1,17 @@
 services:
   - type: web
-    name: zhongli
+    name: GeodEdge
     env: python
     plan: free
+    nodeVersion: "22.x"
     buildCommand: |
       rm -rf node_modules
       npm install --production=false --force
       mkdir -p static/dist
-      # Robust Tailwind build with explicit installation
-      if [ ! -f node_modules/.bin/tailwindcss ]; then
+      if [ ! -f node_modules/tailwindcss/lib/cli.js ]; then
         npm install tailwindcss@latest
       fi
-      ./node_modules/.bin/tailwindcss -i ./static/src/input.css -o ./static/dist/output.css --minify
+      node node_modules/tailwindcss/lib/cli.js -i ./static/src/input.css -o ./static/dist/output.css --minify
       poetry install --no-dev
       poetry run pip install gunicorn
     startCommand: |
