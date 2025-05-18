@@ -1,15 +1,13 @@
 services:
   - type: web
-    name: GeodEdge
+    name: zhongli
     env: python
     plan: free
     buildCommand: |
-       # Node.js setup
-      npm install --production=false --legacy-peer-deps
+      npm install --production=false --force
       mkdir -p static/dist
-      chmod -R +x node_modules/.bin
-      ./node_modules/.bin/tailwindcss -i ./static/src/input.css -o ./static/dist/output.css --minify || \
-      npx --yes tailwindcss@latest -i ./static/src/input.css -o ./static/dist/output.css --minify
-      pip install --upgrade pip
-      pip install -r requirements.txt
-    startCommand: gunicorn --worker-tmp-dir /dev/shm --bind 0.0.0.0:$PORT app:app
+      (./node_modules/.bin/tailwindcss -i ./static/src/input.css -o ./static/dist/output.css --minify || npx tailwindcss@latest -i ./static/src/input.css -o ./static/dist/output.css --minify)
+      poetry install --no-dev
+      poetry run pip install gunicorn
+    startCommand: |
+      poetry run gunicorn --worker-tmp-dir /dev/shm --bind 0.0.0.0:$PORT app:app
