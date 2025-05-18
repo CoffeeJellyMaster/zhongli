@@ -4,9 +4,18 @@ services:
     env: python
     plan: free
     buildCommand: |
+      # Force clean Node modules installation
+      rm -rf node_modules
       npm install --production=false --force
       mkdir -p static/dist
-      (./node_modules/.bin/tailwindcss -i ./static/src/input.css -o ./static/dist/output.css --minify || npx tailwindcss@latest -i ./static/src/input.css -o ./static/dist/output.css --minify)
+      
+      # Robust Tailwind build with explicit installation
+      if [ ! -f node_modules/.bin/tailwindcss ]; then
+        npm install tailwindcss@latest
+      fi
+      ./node_modules/.bin/tailwindcss -i ./static/src/input.css -o ./static/dist/output.css --minify
+      
+      # Python setup
       poetry install --no-dev
       poetry run pip install gunicorn
     startCommand: |
