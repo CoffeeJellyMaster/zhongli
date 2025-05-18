@@ -4,7 +4,8 @@ services:
     env: python
     plan: free
     buildCommand: |
-      npm install
-      npx tailwindcss -i ./static/src/input.css -o ./static/dist/output.css --minify
+      chmod -R +x node_modules/.bin
+      npm ci
+      npm run build:css
       pip install -r requirements.txt
     startCommand: python app.py
