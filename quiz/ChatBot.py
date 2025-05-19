@@ -1,9 +1,10 @@
+import os
 import google.generativeai as genai
 
 GEMINI_API_KEY = "AIzaSyDBtGk8ZgX3_S7zjZH3-ywMitCwJy7sSn0"
+# GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 # Configure Gemini
 genai.configure(api_key=GEMINI_API_KEY)
-
 # Use the correct model name (Gemini 1.5 Flash)
 model = genai.GenerativeModel('gemini-1.5-flash')  # Updated to Flash model
 

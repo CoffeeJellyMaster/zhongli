@@ -241,7 +241,7 @@
                 <div class="mb-4">
                     <span class="text-sm text-gray-600">Question ${current} of ${total}</span>
                     <h3 class="text-xl font-bold mt-2">${question.question}</h3>
-                    <p class="text-sm text-gray-500 mt-1">${question.category} | ${question.difficulty}</p>
+                    <p class="text-sm text-gray-500 mt-1"> ${question.category.replace("IF", "").trim()} | ${question.difficulty}</p>
                 </div>
                 <div class="space-y-2">
                     ${question.options.map(option => `
